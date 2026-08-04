@@ -21,6 +21,7 @@
             --accent-drone: #06b6d4;
             --accent-cad: #10b981;
             --accent-game: #ec4899;
+            --accent-dday: #f59e0b;
             --accent-memo: #8b5cf6;
             --accent-secret: #f59e0b;
         }
@@ -41,6 +42,7 @@
             --accent-drone: #22d3ee;
             --accent-cad: #34d399;
             --accent-game: #f472b6;
+            --accent-dday: #fbbf24;
             --accent-memo: #a78bfa;
             --accent-secret: #fbbf24;
         }
@@ -86,7 +88,7 @@
             left: 0;
             width: 6px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--accent-memo), var(--accent-robot));
+            background: linear-gradient(to bottom, var(--accent-dday), var(--accent-robot));
         }
 
         .profile-info h1 {
@@ -186,13 +188,13 @@
         .card.cad::after { background-color: var(--accent-cad); }
         .card.game::after { background-color: var(--accent-game); }
         
-        .card.memo {
+        .card.dday, .card.memo {
             cursor: default;
-            grid-column: 1 / -1; /* 메모장 카드가 남은 공간을 예쁘게 채우도록 전체 너비 사용 */
         }
-        .card.memo:hover {
+        .card.dday:hover, .card.memo:hover {
             transform: none;
         }
+        .card.dday::after { background-color: var(--accent-dday); }
         .card.memo::after { background-color: var(--accent-memo); }
 
         .card h2 {
@@ -238,20 +240,26 @@
             margin-bottom: 12px;
         }
 
-        .mini-todo-form {
+        .mini-form {
             display: flex;
+            flex-direction: column;
             gap: 8px;
             margin-top: 16px;
         }
 
+        .form-row {
+            display: flex;
+            gap: 8px;
+        }
+
         .mini-input {
             flex: 1;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 1px solid var(--border-color);
             background-color: var(--bg-color);
             color: var(--text-color);
-            border-radius: 12px;
-            font-size: 0.95rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
             outline: none;
         }
 
@@ -260,15 +268,18 @@
         }
 
         .mini-btn {
-            padding: 12px 24px;
-            background-color: var(--accent-memo);
+            padding: 10px 16px;
+            background-color: var(--primary);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
+
+        .card.dday .mini-btn { background-color: var(--accent-dday); }
+        .card.memo .mini-btn { background-color: var(--accent-memo); }
 
         .mini-btn:hover {
             opacity: 0.9;
@@ -277,7 +288,7 @@
         .item-list {
             list-style: none;
             margin-top: 14px;
-            max-height: 220px;
+            max-height: 180px;
             overflow-y: auto;
         }
 
@@ -285,9 +296,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid var(--border-color);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .item-row:last-child {
@@ -301,6 +312,12 @@
             cursor: pointer;
             font-size: 0.85rem;
             font-weight: 600;
+        }
+
+        .d-day-badge {
+            font-weight: 700;
+            color: var(--accent-dday);
+            margin-right: 8px;
         }
 
         .sub-header {
@@ -465,12 +482,27 @@
                     <span class="click-guide">👉 게임 정의 및 공식 홈페이지 보러가기 &rarr;</span>
                 </div>
 
+                <div class="card dday" data-search="프로젝트 디데이 일정 관리">
+                    <h2>⏳ 프로젝트 디데이 (D-Day)</h2>
+                    <p class="desc-text">주요 일정과 목표일까지 남은 날짜를 확인하세요.</p>
+                    <form class="mini-form" id="ddayForm">
+                        <div class="form-row">
+                            <input type="text" class="mini-input" id="ddayTitleInput" placeholder="일정 제목" required autocomplete="off">
+                            <input type="date" class="mini-input" id="ddayDateInput" required>
+                        </div>
+                        <button type="submit" class="mini-btn">디데이 추가</button>
+                    </form>
+                    <ul class="item-list" id="ddayList"></ul>
+                </div>
+
                 <div class="card memo" data-search="개인 메모장 To-Do 일정 기록">
                     <h2>📌 개인 메모장 & To-Do</h2>
                     <p class="desc-text">프로젝트 아이디어나 일정을 자유롭게 기록할 수 있는 공간입니다.</p>
-                    <form class="mini-todo-form" id="todoForm">
-                        <input type="text" class="mini-input" id="todoInput" placeholder="할 일이나 아이디어 입력..." required autocomplete="off">
-                        <button type="submit" class="mini-btn">추가</button>
+                    <form class="mini-form" id="todoForm">
+                        <div class="form-row">
+                            <input type="text" class="mini-input" id="todoInput" placeholder="할 일이나 아이디어 입력..." required autocomplete="off">
+                            <button type="submit" class="mini-btn">추가</button>
+                        </div>
                     </form>
                     <ul class="item-list" id="todoList"></ul>
                 </div>
@@ -694,6 +726,65 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // D-Day Logic
+        const ddayForm = document.getElementById('ddayForm');
+        const ddayTitleInput = document.getElementById('ddayTitleInput');
+        const ddayDateInput = document.getElementById('ddayDateInput');
+        const ddayList = document.getElementById('ddayList');
+
+        let ddays = JSON.parse(localStorage.getItem('project_ddays')) || [
+            { title: '로보틱스 대회 개막', date: '2026-10-15' }
+        ];
+
+        function renderDdays() {
+            ddayList.innerHTML = '';
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            ddays.forEach((item, index) => {
+                const targetDate = new Date(item.date);
+                targetDate.setHours(0,0,0,0);
+                
+                const diffTime = targetDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                let badgeText = '';
+                if (diffDays > 0) badgeText = `D-${diffDays}`;
+                else if (diffDays === 0) badgeText = `D-Day`;
+                else badgeText = `D+${Math.abs(diffDays)}`;
+
+                const li = document.createElement('li');
+                li.className = 'item-row';
+                li.innerHTML = `
+                    <div>
+                        <span class="d-day-badge">${badgeText}</span>
+                        <span>${escapeHtml(item.title)} (${item.date})</span>
+                    </div>
+                    <button class="delete-item" onclick="deleteDday(${index})">삭제</button>
+                `;
+                ddayList.appendChild(li);
+            });
+            localStorage.setItem('project_ddays', JSON.stringify(ddays));
+        }
+
+        ddayForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = ddayTitleInput.value.trim();
+            const date = ddayDateInput.value;
+            if(title && date) {
+                ddays.push({ title, date });
+                ddayTitleInput.value = '';
+                ddayDateInput.value = '';
+                renderDdays();
+            }
+        });
+
+        window.deleteDday = function(index) {
+            ddays.splice(index, 1);
+            renderDdays();
+        }
+
+        // Memo Logic
         const todoForm = document.getElementById('todoForm');
         const todoInput = document.getElementById('todoInput');
         const todoList = document.getElementById('todoList');
@@ -738,6 +829,7 @@
             );
         }
 
+        renderDdays();
         renderNotes();
     </script>
 </body>
