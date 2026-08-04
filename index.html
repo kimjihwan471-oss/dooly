@@ -1,9 +1,9 @@
-html_content = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jihwan's Hub</title>
+    <title>Dooly's Projects Hub</title>
     <style>
         :root {
             --bg-color: #f8fafc;
@@ -17,11 +17,13 @@ html_content = """<!DOCTYPE html>
             --tag-text: #1e40af;
             --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
             
+            /* 프로젝트별 포인트 컬러 */
             --accent-robot: #3b82f6;
             --accent-drone: #06b6d4;
             --accent-cad: #10b981;
             --accent-game: #ec4899;
             --accent-memo: #8b5cf6;
+            --accent-secret: #f59e0b; /* 비밀 페이지 포인트 컬러 */
         }
 
         [data-theme="dark"] {
@@ -41,6 +43,7 @@ html_content = """<!DOCTYPE html>
             --accent-cad: #34d399;
             --accent-game: #f472b6;
             --accent-memo: #a78bfa;
+            --accent-secret: #fbbf24;
         }
 
         * {
@@ -63,6 +66,7 @@ html_content = """<!DOCTYPE html>
             margin: 0 auto;
         }
 
+        /* 상단 프로필 바 */
         header {
             display: flex;
             justify-content: space-between;
@@ -120,13 +124,9 @@ html_content = """<!DOCTYPE html>
             margin-bottom: 24px;
         }
 
-        .search-input-wrapper {
-            position: relative;
-        }
-
         .search-input {
             width: 100%;
-            padding: 16px 20px 16px 50px;
+            padding: 16px 20px;
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-color);
@@ -138,16 +138,6 @@ html_content = """<!DOCTYPE html>
 
         .search-input:focus {
             border-color: var(--primary);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            pointer-events: none;
         }
 
         /* 화면 전환 뷰 설정 */
@@ -196,6 +186,7 @@ html_content = """<!DOCTYPE html>
             height: 4px;
         }
 
+        /* 카드별 상단 라인 컬러 */
         .card.robot::after { background-color: var(--accent-robot); }
         .card.drone::after { background-color: var(--accent-drone); }
         .card.cad::after { background-color: var(--accent-cad); }
@@ -229,6 +220,7 @@ html_content = """<!DOCTYPE html>
         .card.cad .click-guide { color: var(--accent-cad); }
         .card.game .click-guide { color: var(--accent-game); }
 
+        /* 태그 스타일 */
         .tag-container {
             display: flex;
             flex-wrap: wrap;
@@ -252,6 +244,7 @@ html_content = """<!DOCTYPE html>
             margin-bottom: 12px;
         }
 
+        /* 메모장 컴포넌트 */
         .mini-todo-form {
             display: flex;
             gap: 8px;
@@ -388,6 +381,7 @@ html_content = """<!DOCTYPE html>
             color: white;
         }
 
+        /* 드론 페이지 전용 스타일 */
         .drone-card-header {
             display: flex;
             align-items: center;
@@ -424,20 +418,17 @@ html_content = """<!DOCTYPE html>
         <!-- 상단 프로필 영역 -->
         <header>
             <div class="profile-info">
-                <h1>Jihwan의 프로젝트 허브</h1>
-                <p>로보틱스 · 드론 제작 · 3D 모델링 · 게임 아카이브</p>
+                <h1>둘리(Dooly)의 프로젝트 허브</h1>
+                <p>로보틱스 · 드론 판매 및 제품 · 3D 모델링 · 게임 아카이브</p>
             </div>
             <button class="theme-toggle" id="themeToggle">🌙 다크모드</button>
         </header>
 
         <!-- VIEW 1: 메인 대시보드 -->
         <div id="mainView" class="view-section active">
-            <!-- 검색창 영역 -->
+            <!-- 검색창 영역 (예시 문구 제거됨) -->
             <div class="search-bar-container">
-                <div class="search-input-wrapper">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="searchInput" class="search-input" placeholder="검색어를 입력하세요 (비밀 키워드: dooly.09)..." autocomplete="off">
-                </div>
+                <input type="text" id="searchInput" class="search-input" placeholder="" autocomplete="off">
             </div>
 
             <div class="dashboard-grid" id="dashboardGrid">
@@ -506,14 +497,28 @@ html_content = """<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- VIEW: 검색 결과 전용 서브페이지 (dooly.09 입력 시) -->
-        <div id="subKeywordResult" class="view-section">
+        <!-- VIEW: 비밀 프로필 서브페이지 (dooly.09 입력 시 등장) -->
+        <div id="subSecret" class="view-section">
             <div class="sub-header">
                 <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
-                <h2 id="keywordPageTitle" style="font-size: 1.4rem; font-weight: 700; color: var(--primary);">✨ 시크릿 프로필 페이지</h2>
+                <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--accent-secret);">🔒 시크릿 프로필 아카이브</h2>
             </div>
-            <div class="sub-grid" id="keywordResultGrid">
-                <!-- 동적으로 채워짐 -->
+            <div class="sub-grid">
+                <div class="sub-card">
+                    <div>
+                        <div class="sub-title">Jihwan's Identity</div>
+                        <div class="sub-desc" style="line-height: 1.8;">
+                            • <strong>이름:</strong> Jihwan (둘리)<br>
+                            • <strong>생년월일:</strong> 2009년 8월 23일<br>
+                            • <strong>현재 거주지역:</strong> 경기도 평택시<br>
+                            • <strong>목표 진로:</strong> 드론 제작자 및 로보틱스 전문가
+                        </div>
+                    </div>
+                    <div class="tag-container" style="margin-top: 16px; margin-bottom: 0;">
+                        <span class="tag">Secret Access</span>
+                        <span class="tag">Dooly.09</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -531,7 +536,6 @@ html_content = """<!DOCTYPE html>
                     </div>
                     <a href="https://www.fest.or.kr/" target="_blank" class="sub-link">창의공학교육협회 (FEST) 공식 홈페이지</a>
                 </div>
-
                 <div class="sub-card">
                     <div>
                         <div class="sub-title">FTC 스카웃 (Team Profiles)</div>
@@ -567,7 +571,6 @@ html_content = """<!DOCTYPE html>
                     </div>
                     <a href="https://www.dji.com/kr" target="_blank" class="sub-link">DJI 공식 홈페이지</a>
                 </div>
-
                 <div class="sub-card">
                     <div>
                         <div class="drone-card-header">
@@ -583,7 +586,6 @@ html_content = """<!DOCTYPE html>
                     </div>
                     <a href="https://www.skydio.com" target="_blank" class="sub-link">Skydio 공식 홈페이지</a>
                 </div>
-
                 <div class="sub-card">
                     <div>
                         <div class="drone-card-header">
@@ -636,7 +638,7 @@ html_content = """<!DOCTYPE html>
                 <div class="sub-card">
                     <div>
                         <div class="sub-title">마인크래프트 (Minecraft)</div>
-                        <div class="sub-desc">B블록을 배치하고 자유롭게 구조물을 건설하며 탐험과 창작을 즐기는 샌드박스 게임입니다.</div>
+                        <div class="sub-desc">블록을 배치하고 자유롭게 구조물을 건설하며 탐험과 창작을 즐기는 샌드박스 게임입니다.</div>
                     </div>
                     <a href="https://www.minecraft.net/ko-kr" target="_blank" class="sub-link">공식 홈페이지 방문</a>
                 </div>
@@ -668,80 +670,34 @@ html_content = """<!DOCTYPE html>
             }
         });
 
-        // 2. 검색창 키워드 입력 및 엔터 라우팅 기능
+        // 2. 실시간 검색창 필터링 및 'dooly.09' 비밀 서브페이지 라우팅 기능
         const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.dashboard-grid .card');
         const mainView = document.getElementById('mainView');
         const views = document.querySelectorAll('.view-section');
-        const cards = document.querySelectorAll('.dashboard-grid .card');
 
-        searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const query = searchInput.value.trim().toLowerCase();
-                if (!query) return;
-
-                if (query === 'dooly.09' || query === 'dooly') {
-                    openDoolySpecialPage();
-                } else {
-                    // 일반 검색어는 카드 필터링
-                    cards.forEach(card => {
-                        const searchKeyword = card.getAttribute('data-search').toLowerCase();
-                        const cardText = card.textContent.toLowerCase();
-                        if (searchKeyword.includes(query) || cardText.includes(query)) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                }
-            }
-        });
-
-        // 실시간 입력 시 검색어 비어있으면 카드 전체 복구
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase().trim();
-            if (query === '') {
-                cards.forEach(card => card.style.display = 'block');
+
+            // 검색창에 'dooly.09'를 입력하면 비밀 서브페이지로 전환
+            if (query === 'dooly.09') {
+                views.forEach(v => v.classList.remove('active'));
+                document.getElementById('subSecret').classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
             }
+
+            // 일반 카드 필터링
+            cards.forEach(card => {
+                const searchKeyword = card.getAttribute('data-search').toLowerCase();
+                const cardText = card.textContent.toLowerCase();
+                if (searchKeyword.includes(query) || cardText.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         });
-
-        // 'dooly.09' 전용 서브페이지 생성 함수 (개인 정보 반영)
-        function openDoolySpecialPage() {
-            views.forEach(v => v.classList.remove('active'));
-            const resultView = document.getElementById('subKeywordResult');
-            const resultGrid = document.getElementById('keywordResultGrid');
-            const titleEl = document.getElementById('keywordPageTitle');
-
-            titleEl.textContent = `✨ 시크릿 프로필: dooly.09 (Jihwan의 공간)`;
-            
-            resultGrid.innerHTML = `
-                <div class="sub-card" style="border-top: 4px solid var(--accent-robot);">
-                    <div>
-                        <div class="sub-title">👤 기본 프로필 정보</div>
-                        <div class="sub-desc">
-                            • <strong>이름:</strong> Jihwan (지환)<br>
-                            • <strong>생년월일:</strong> 2009년 8월 23일<br>
-                            • <strong>현재 거주지역:</strong> 경기도 평택시<br>
-                            • <strong>소속:</strong> 라온고등학교 2학년
-                        </div>
-                    </div>
-                    <a href="#" class="sub-link" onclick="goHome(); return false;">메인으로 돌아가기</a>
-                </div>
-                <div class="sub-card" style="border-top: 4px solid var(--accent-drone);">
-                    <div>
-                        <div class="sub-title">🚀 진로 및 주요 관심사</div>
-                        <div class="sub-desc">
-                            • <strong>희망 진로:</strong> 드론 제작자 및 엔지니어<br>
-                            • <strong>주요 활동:</strong> 로보틱스 동아리(FTC/KRC 구조 설계 및 메인 드라이버), 드론 시뮬레이터 및 조종 기술 연마<br>
-                            • <strong>기술 스택:</strong> Autodesk Fusion 3D 모델링, 3D 프린팅 슬라이싱
-                        </div>
-                    </div>
-                    <a href="https://ftcscout.org/teams/28646" target="_blank" class="sub-link">관련 링크 확인하기</a>
-                </div>
-            `;
-
-            resultView.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
 
         // 3. 카드 클릭 시 서브페이지 전환 라우팅
         document.querySelectorAll('.card[data-target]').forEach(card => {
@@ -755,8 +711,9 @@ html_content = """<!DOCTYPE html>
 
         function goHome() {
             views.forEach(v => v.classList.remove('active'));
-            mainView.classList.add('active', 'fade-in');
-            searchInput.value = '';
+            mainView.classList.add('active');
+            searchInput.value = ''; // 검색창 초기화
+            // 카드 표시 상태 원복
             cards.forEach(card => card.style.display = 'block');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -802,7 +759,7 @@ html_content = """<!DOCTYPE html>
 
         function escapeHtml(str) {
             return str.replace(/[&<>'"]/g, 
-                tag => ${({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
             );
         }
 
@@ -810,7 +767,3 @@ html_content = """<!DOCTYPE html>
     </script>
 </body>
 </html>
-"""
-
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(html_content)
