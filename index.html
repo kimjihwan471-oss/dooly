@@ -22,6 +22,7 @@
             --accent-cad: #10b981;
             --accent-game: #ec4899;
             --accent-memo: #8b5cf6;
+            --accent-dday: #f59e0b;
             --accent-secret: #f59e0b;
         }
 
@@ -42,6 +43,7 @@
             --accent-cad: #34d399;
             --accent-game: #f472b6;
             --accent-memo: #a78bfa;
+            --accent-dday: #fbbf24;
             --accent-secret: #fbbf24;
         }
 
@@ -186,13 +188,14 @@
         .card.cad::after { background-color: var(--accent-cad); }
         .card.game::after { background-color: var(--accent-game); }
         
-        .card.memo {
+        .card.memo, .card.dday {
             cursor: default;
         }
-        .card.memo:hover {
+        .card.memo:hover, .card.dday:hover {
             transform: none;
         }
         .card.memo::after { background-color: var(--accent-memo); }
+        .card.dday::after { background-color: var(--accent-dday); }
 
         .card h2 {
             font-size: 1.2rem;
@@ -237,13 +240,19 @@
             margin-bottom: 12px;
         }
 
-        .mini-todo-form {
+        .mini-todo-form, .dday-form {
             display: flex;
+            flex-direction: column;
             gap: 8px;
             margin-top: 16px;
         }
 
-        .mini-input {
+        .dday-inputs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .mini-input, .dday-input {
             flex: 1;
             padding: 10px 14px;
             border: 1px solid var(--border-color);
@@ -254,12 +263,12 @@
             outline: none;
         }
 
-        .mini-input:focus {
-            border-color: var(--accent-memo);
+        .mini-input:focus, .dday-input:focus {
+            border-color: var(--primary);
         }
 
         .mini-btn {
-            padding: 0 16px;
+            padding: 10px 16px;
             background-color: var(--accent-memo);
             color: white;
             border: none;
@@ -269,7 +278,12 @@
             font-size: 0.9rem;
         }
 
-        .mini-btn:hover {
+        .dday-btn {
+            background-color: var(--accent-dday);
+            color: #0f172a;
+        }
+
+        .mini-btn:hover, .dday-btn:hover {
             opacity: 0.9;
         }
 
@@ -291,6 +305,21 @@
 
         .item-row:last-child {
             border-bottom: none;
+        }
+
+        .dday-badge {
+            background-color: #fef3c7;
+            color: #d97706;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-right: 8px;
+        }
+
+        [data-theme="dark"] .dday-badge {
+            background-color: #78350f;
+            color: #fde68a;
         }
 
         .delete-item {
@@ -464,6 +493,19 @@
                     <span class="click-guide">👉 게임 정의 및 공식 홈페이지 보러가기 &rarr;</span>
                 </div>
 
+                <div class="card dday" data-search="디데이 D-Day 일정 카운터">
+                    <h2>⏳ 프로젝트 디데이 & 일정</h2>
+                    <p class="desc-text">중요한 대회나 시험까지 남은 날짜를 실시간으로 확인합니다.</p>
+                    <form class="dday-form" id="ddayForm">
+                        <input type="text" class="mini-input" id="ddayTitleInput" placeholder="일정 이름 (예: FTC 대회)" required autocomplete="off">
+                        <div class="dday-inputs">
+                            <input type="date" class="dday-input" id="ddayDateInput" required>
+                            <button type="submit" class="mini-btn dday-btn">D-Day 추가</button>
+                        </div>
+                    </form>
+                    <ul class="item-list" id="ddayList"></ul>
+                </div>
+
                 <div class="card memo" data-search="개인 메모장 To-Do 일정 기록">
                     <h2>📌 개인 메모장 & To-Do</h2>
                     <p class="desc-text">프로젝트 아이디어나 일정을 자유롭게 기록할 수 있는 공간입니다.</p>
@@ -633,14 +675,21 @@
         const themeToggle = document.getElementById('themeToggle');
         const htmlElement = document.documentElement;
 
+        // 테마 로드 및 설정 유지
+        const savedTheme = localStorage.getItem('site_theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        themeToggle.textContent = savedTheme === 'dark' ? '☀️ 라이트모드' : '🌙 다크모드';
+
         themeToggle.addEventListener('click', () => {
             const currentTheme = htmlElement.getAttribute('data-theme');
             if (currentTheme === 'light') {
                 htmlElement.setAttribute('data-theme', 'dark');
                 themeToggle.textContent = '☀️ 라이트모드';
+                localStorage.setItem('site_theme', 'dark');
             } else {
                 htmlElement.setAttribute('data-theme', 'light');
                 themeToggle.textContent = '🌙 다크모드';
+                localStorage.setItem('site_theme', 'light');
             }
         });
 
@@ -687,6 +736,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // To-Do 메모장 기능
         const todoForm = document.getElementById('todoForm');
         const todoInput = document.getElementById('todoInput');
         const todoList = document.getElementById('todoList');
@@ -725,6 +775,68 @@
             renderNotes();
         }
 
+        // D-Day 카운터 기능
+        const ddayForm = document.getElementById('ddayForm');
+        const ddayTitleInput = document.getElementById('ddayTitleInput');
+        const ddayDateInput = document.getElementById('ddayDateInput');
+        const ddayList = document.getElementById('ddayList');
+
+        let ddays = JSON.parse(localStorage.getItem('project_ddays')) || [
+            { title: 'FTC 대회 개막', date: '2026-10-15' }
+        ];
+
+        function renderDdays() {
+            ddayList.innerHTML = '';
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            ddays.forEach((item, index) => {
+                const targetDate = new Date(item.date);
+                targetDate.setHours(0, 0, 0, 0);
+                
+                const diffTime = targetDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                let badgeText = '';
+                if (diffDays > 0) {
+                    badgeText = `D-${diffDays}`;
+                } else if (diffDays === 0) {
+                    badgeText = `D-Day`;
+                } else {
+                    badgeText = `D+${Math.abs(diffDays)}`;
+                }
+
+                const li = document.createElement('li');
+                li.className = 'item-row';
+                li.innerHTML = `
+                    <div style="display: flex; align-items: center; overflow: hidden;">
+                        <span class="dday-badge">${badgeText}</span>
+                        <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</span>
+                    </div>
+                    <button class="delete-item" onclick="deleteDday(${index})">삭제</button>
+                `;
+                ddayList.appendChild(li);
+            });
+            localStorage.setItem('project_ddays', JSON.stringify(ddays));
+        }
+
+        ddayForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = ddayTitleInput.value.trim();
+            const date = ddayDateInput.value;
+            if(title && date) {
+                ddays.push({ title, date });
+                ddayTitleInput.value = '';
+                ddayDateInput.value = '';
+                renderDdays();
+            }
+        });
+
+        window.deleteDday = function(index) {
+            ddays.splice(index, 1);
+            renderDdays();
+        }
+
         function escapeHtml(str) {
             return str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
@@ -732,6 +844,7 @@
         }
 
         renderNotes();
+        renderDdays();
     </script>
 </body>
 </html>
