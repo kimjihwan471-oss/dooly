@@ -505,15 +505,16 @@
                     <span class="click-guide">👉 상세 내용 및 아이디어 노트 보러가기 &rarr;</span>
                 </div>
 
-                <div class="card drone" data-target="subDrone" data-search="글로벌 드론 브랜드 인기 제품 DJI Skydio Autel Robotics">
-                    <h2>🛸 글로벌 드론 브랜드 & 인기 제품</h2>
+                <div class="card drone" data-target="subDrone" data-search="드론 종합 정보 허브 기술 자격증 시뮬레이터 법규 DJI Skydio Autel">
+                    <h2>🛸 드론 종합 정보 허브 (All about Drones)</h2>
                     <div class="tag-container">
-                        <span class="tag">DJI</span>
-                        <span class="tag">Skydio</span>
-                        <span class="tag">Autel Robotics</span>
+                        <span class="tag">드론 기술 & 부품</span>
+                        <span class="tag">조종자 자격증</span>
+                        <span class="tag">시뮬레이터</span>
+                        <span class="tag">항공 법규</span>
                     </div>
-                    <p class="desc-text">세계적인 드론 제조·판매 대표 기업들의 핵심 특징과 각 브랜드별 인기 주력 제품 라인업을 비교·분석하는 허브입니다.</p>
-                    <span class="click-guide">👉 상세 내용 및 관련 링크 보러가기 &rarr;</span>
+                    <p class="desc-text">글로벌 제조사부터 초경량비행장치 조종자 자격증, FPV/비행 시뮬레이터, 핵심 항공 법규 및 부품 정보까지 드론의 모든 것을 총망라한 종합 아카이브입니다.</p>
+                    <span class="click-guide">👉 드론 전체 정보 보러가기 &rarr;</span>
                 </div>
 
                 <div class="card cad" data-target="subCad" data-search="3D 모델링 슬라이싱 Autodesk Fusion 3D 프린팅 부품 설계 단축키 단위환산기">
@@ -641,53 +642,103 @@
         <div id="subDrone" class="view-section">
             <div class="sub-header">
                 <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
-                <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--accent-drone);">🛸 글로벌 드론 제조사 및 인기 제품</h2>
+                <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--accent-drone);">🛸 드론 종합 정보 허브 (All about Drones)</h2>
             </div>
-            <div class="sub-grid">
-                <div class="sub-card">
-                    <div>
-                        <div class="drone-card-header">
-                            <img src="https://www.dji.com/favicon.ico" alt="DJI Logo" class="company-logo">
-                            <div class="sub-title" style="margin-bottom:0;">DJI (디제이아이)</div>
+            
+            <div style="margin-bottom: 24px;">
+                <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 14px; color: var(--text-color);">1. 글로벌 드론 제조사 및 인기 제품</h3>
+                <div class="sub-grid">
+                    <div class="sub-card">
+                        <div>
+                            <div class="drone-card-header">
+                                <img src="https://www.dji.com/favicon.ico" alt="DJI Logo" class="company-logo">
+                                <div class="sub-title" style="margin-bottom:0;">DJI (디제이아이)</div>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=600&q=80" alt="DJI Drone" class="drone-img">
+                            <div class="sub-desc">
+                                글로벌 시장 점유율 1위의 드론 선도 기업.<br>
+                                • <strong>주력 제품 1:</strong> DJI Matrice 300 RTK (산업용 정밀 점검 최적화)<br>
+                                • <strong>주력 제품 2:</strong> DJI Mini 3 Pro (초경량 고성능 촬영용)
+                            </div>
                         </div>
-                        <img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=600&q=80" alt="DJI Drone" class="drone-img">
-                        <div class="sub-desc">
-                            글로벌 시장 점유율 1위의 드론 선도 기업.<br>
-                            • <strong>주력 제품 1:</strong> DJI Matrice 300 RTK (산업용 정밀 점검 최적화)<br>
-                            • <strong>주력 제품 2:</strong> DJI Mini 3 Pro (초경량 고성능 촬영용)
-                        </div>
+                        <a href="https://www.dji.com/kr" target="_blank" class="sub-link">DJI 공식 홈페이지</a>
                     </div>
-                    <a href="https://www.dji.com/kr" target="_blank" class="sub-link">DJI 공식 홈페이지</a>
+                    <div class="sub-card">
+                        <div>
+                            <div class="drone-card-header">
+                                <img src="https://www.skydio.com/favicon.ico" alt="Skydio Logo" class="company-logo">
+                                <div class="sub-title" style="margin-bottom:0;">Skydio (스카이디오)</div>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" alt="Skydio Drone" class="drone-img">
+                            <div class="sub-desc">
+                                미국 선도 드론 제조사이자 자율 비행·장애물 회피 기술 분야의 리더.<br>
+                                • <strong>주력 제품 1:</strong> Skydio 2+ (AI 기반 완전 자율 비행)<br>
+                                • <strong>주력 제품 2:</strong> Skydio X2 (기업 및 방위 산업용 중장비 드론)
+                            </div>
+                        </div>
+                        <a href="https://www.skydio.com" target="_blank" class="sub-link">Skydio 공식 홈페이지</a>
+                    </div>
+                    <div class="sub-card">
+                        <div>
+                            <div class="drone-card-header">
+                                <img src="https://www.autelrobotics.com/favicon.ico" alt="Autel Logo" class="company-logo">
+                                <div class="sub-title" style="margin-bottom:0;">Autel Robotics</div>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=600&q=80" alt="Autel Drone" class="drone-img">
+                            <div class="sub-desc">
+                                고성능 카메라와 빠른 반응 속도로 DJI의 강력한 대안으로 꼽히는 제조사.<br>
+                                • <strong>주력 제품 1:</strong> EVO II Dual 640T (열화상 및 RGB 동시 촬영)<br>
+                                • <strong>주력 제품 2:</strong> EVO Lite+ (야간 촬영 및 광학 성능 특화)
+                            </div>
+                        </div>
+                        <a href="https://www.autelrobotics.com" target="_blank" class="sub-link">Autel 공식 홈페이지</a>
+                    </div>
                 </div>
-                <div class="sub-card">
-                    <div>
-                        <div class="drone-card-header">
-                            <img src="https://www.skydio.com/favicon.ico" alt="Skydio Logo" class="company-logo">
-                            <div class="sub-title" style="margin-bottom:0;">Skydio (스카이디오)</div>
+            </div>
+
+            <div style="margin-top: 32px;">
+                <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 14px; color: var(--text-color);">2. 드론 자격증, 시뮬레이터 및 핵심 규정 가이드</h3>
+                <div class="sub-grid">
+                    <div class="sub-card">
+                        <div>
+                            <div class="sub-title">🎓 초경량비행장치(무인멀티콥터) 자격증</div>
+                            <div class="sub-desc">
+                                한국교통안전공단(TS)에서 시행하는 국가 자격 시험 정보입니다.<br>
+                                • <strong>1종:</strong> 25kg 초과 ~ 150kg 이하 (기체 무게 기준, 실기시험 필수)<br>
+                                • <strong>2종:</strong> 7kg 초과 ~ 25kg 이하 (지정 교육기관 이수)<br>
+                                • <strong>3종:</strong> 2kg 초과 ~ 7kg 이하 (온라인 교육 및 학과시험 면제형태)
+                            </div>
                         </div>
-                        <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" alt="Skydio Drone" class="drone-img">
-                        <div class="sub-desc">
-                            미국 선도 드론 제조사이자 자율 비행·장애물 회피 기술 분야의 리더.<br>
-                            • <strong>주력 제품 1:</strong> Skydio 2+ (AI 기반 완전 자율 비행)<br>
-                            • <strong>주력 제품 2:</strong> Skydio X2 (기업 및 방위 산업용 중장비 드론)
+                        <a href="https://www.kotsa.or.kr/" target="_blank" class="sub-link">한국교통안전공단 바로가기</a>
+                    </div>
+
+                    <div class="sub-card">
+                        <div>
+                            <div class="sub-title">💻 드론 비행 및 FPV 시뮬레이터</div>
+                            <div class="sub-desc">
+                                실내·외 조종 감각을 익히고 사고 위험 없이 연습할 수 있는 주요 프로그램입니다.<br>
+                                • <strong>Liftoff / DRL Simulator:</strong> FPV 드론 레이싱 및 정밀 곡예 비행 연습 최적화<br>
+                                • <strong>DJI Flight Simulator:</strong> 실제 DJI 기체 조종감과 동일한 환경 제공
+                            </div>
+                        </div>
+                        <div class="tag-container" style="margin-top: 10px; margin-bottom: 0;">
+                            <span class="tag">조종 훈련</span>
+                            <span class="tag">FPV 레이싱</span>
                         </div>
                     </div>
-                    <a href="https://www.skydio.com" target="_blank" class="sub-link">Skydio 공식 홈페이지</a>
-                </div>
-                <div class="sub-card">
-                    <div>
-                        <div class="drone-card-header">
-                            <img src="https://www.autelrobotics.com/favicon.ico" alt="Autel Logo" class="company-logo">
-                            <div class="sub-title" style="margin-bottom:0;">Autel Robotics</div>
+
+                    <div class="sub-card">
+                        <div>
+                            <div class="sub-title">📜 국내외 주요 항공 법규 및 안전 수칙</div>
+                            <div class="sub-desc">
+                                드론 비행 시 반드시 준수해야 하는 공통 규정입니다.<br>
+                                • <strong>야간 비행 금지:</strong> 일몰 후부터 일출 전까지 비행 제한 (허가 필요)<br>
+                                • <strong>가시거리 비행:</strong> 조종자의 눈으로 기체를 직접 볼 수 있는 범위 내 조종<br>
+                                • <strong>비행제한구역:</strong> 원전, 군부대, 서울 일부 지역 등은 사전 승인 필수
+                            </div>
                         </div>
-                        <img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=600&q=80" alt="Autel Drone" class="drone-img">
-                        <div class="sub-desc">
-                            고성능 카메라와 빠른 반응 속도로 DJI의 강력한 대안으로 꼽히는 제조사.<br>
-                            • <strong>주력 제품 1:</strong> EVO II Dual 640T (열화상 및 RGB 동시 촬영)<br>
-                            • <strong>주력 제품 2:</strong> EVO Lite+ (야간 촬영 및 광학 성능 특화)
-                        </div>
+                        <a href="https://drone.onestop.go.kr/" target="_blank" class="sub-link">드론원스톱 민원서비스 (비행 승인)</a>
                     </div>
-                    <a href="https://www.autelrobotics.com" target="_blank" class="sub-link">Autel 공식 홈페이지</a>
                 </div>
             </div>
         </div>
