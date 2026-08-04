@@ -22,7 +22,6 @@
             --accent-cad: #10b981;
             --accent-game: #ec4899;
             --accent-memo: #8b5cf6;
-            --accent-dday: #f59e0b;
             --accent-secret: #f59e0b;
         }
 
@@ -43,7 +42,6 @@
             --accent-cad: #34d399;
             --accent-game: #f472b6;
             --accent-memo: #a78bfa;
-            --accent-dday: #fbbf24;
             --accent-secret: #fbbf24;
         }
 
@@ -88,7 +86,7 @@
             left: 0;
             width: 6px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--accent-dday), var(--accent-robot));
+            background: linear-gradient(to bottom, var(--accent-memo), var(--accent-robot));
         }
 
         .profile-info h1 {
@@ -188,14 +186,13 @@
         .card.cad::after { background-color: var(--accent-cad); }
         .card.game::after { background-color: var(--accent-game); }
         
-        .card.memo, .card.dday {
+        .card.memo {
             cursor: default;
         }
-        .card.memo:hover, .card.dday:hover {
+        .card.memo:hover {
             transform: none;
         }
         .card.memo::after { background-color: var(--accent-memo); }
-        .card.dday::after { background-color: var(--accent-dday); }
 
         .card h2 {
             font-size: 1.2rem;
@@ -240,19 +237,14 @@
             margin-bottom: 12px;
         }
 
-        .mini-todo-form, .dday-form {
+        .mini-todo-form {
             display: flex;
             flex-direction: column;
             gap: 8px;
             margin-top: 16px;
         }
 
-        .dday-inputs {
-            display: flex;
-            gap: 8px;
-        }
-
-        .mini-input, .dday-input {
+        .mini-input {
             flex: 1;
             padding: 10px 14px;
             border: 1px solid var(--border-color);
@@ -263,7 +255,7 @@
             outline: none;
         }
 
-        .mini-input:focus, .dday-input:focus {
+        .mini-input:focus {
             border-color: var(--primary);
         }
 
@@ -278,12 +270,7 @@
             font-size: 0.9rem;
         }
 
-        .dday-btn {
-            background-color: var(--accent-dday);
-            color: #0f172a;
-        }
-
-        .mini-btn:hover, .dday-btn:hover {
+        .mini-btn:hover {
             opacity: 0.9;
         }
 
@@ -305,21 +292,6 @@
 
         .item-row:last-child {
             border-bottom: none;
-        }
-
-        .dday-badge {
-            background-color: #fef3c7;
-            color: #d97706;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            margin-right: 8px;
-        }
-
-        [data-theme="dark"] .dday-badge {
-            background-color: #78350f;
-            color: #fde68a;
         }
 
         .delete-item {
@@ -449,19 +421,6 @@
 
             <div class="dashboard-grid" id="dashboardGrid">
                 
-                <div class="card dday" data-search="디데이 D-Day 일정 카운터">
-                    <h2>⏳ 프로젝트 디데이 & 일정</h2>
-                    <p class="desc-text">중요한 대회나 시험까지 남은 날짜를 실시간으로 확인합니다.</p>
-                    <form class="dday-form" id="ddayForm">
-                        <input type="text" class="mini-input" id="ddayTitleInput" placeholder="일정 이름 (예: FTC 대회)" required autocomplete="off">
-                        <div class="dday-inputs">
-                            <input type="date" class="dday-input" id="ddayDateInput" required>
-                            <button type="submit" class="mini-btn dday-btn">D-Day 추가</button>
-                        </div>
-                    </form>
-                    <ul class="item-list" id="ddayList"></ul>
-                </div>
-
                 <div class="card robot" data-target="subRobot" data-search="로보틱스 동아리 구조 설계 드라이버 FTC KRC 리쿠르팅">
                     <h2>🤖 로보틱스 동아리</h2>
                     <div class="tag-container">
@@ -773,67 +732,6 @@
             renderNotes();
         }
 
-        const ddayForm = document.getElementById('ddayForm');
-        const ddayTitleInput = document.getElementById('ddayTitleInput');
-        const ddayDateInput = document.getElementById('ddayDateInput');
-        const ddayList = document.getElementById('ddayList');
-
-        let ddays = JSON.parse(localStorage.getItem('project_ddays')) || [
-            { title: 'FTC 대회 개막', date: '2026-10-15' }
-        ];
-
-        function renderDdays() {
-            ddayList.innerHTML = '';
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            ddays.forEach((item, index) => {
-                const targetDate = new Date(item.date);
-                targetDate.setHours(0, 0, 0, 0);
-                
-                const diffTime = targetDate - today;
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
-                let badgeText = '';
-                if (diffDays > 0) {
-                    badgeText = `D-${diffDays}`;
-                } else if (diffDays === 0) {
-                    badgeText = `D-Day`;
-                } else {
-                    badgeText = `D+${Math.abs(diffDays)}`;
-                }
-
-                const li = document.createElement('li');
-                li.className = 'item-row';
-                li.innerHTML = `
-                    <div style="display: flex; align-items: center; overflow: hidden;">
-                        <span class="dday-badge">${badgeText}</span>
-                        <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</span>
-                    </div>
-                    <button class="delete-item" onclick="deleteDday(${index})">삭제</button>
-                `;
-                ddayList.appendChild(li);
-            });
-            localStorage.setItem('project_ddays', JSON.stringify(ddays));
-        }
-
-        ddayForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const title = ddayTitleInput.value.trim();
-            const date = ddayDateInput.value;
-            if(title && date) {
-                ddays.push({ title, date });
-                ddayTitleInput.value = '';
-                ddayDateInput.value = '';
-                renderDdays();
-            }
-        });
-
-        window.deleteDday = function(index) {
-            ddays.splice(index, 1);
-            renderDdays();
-        }
-
         function escapeHtml(str) {
             return str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
@@ -841,7 +739,6 @@
         }
 
         renderNotes();
-        renderDdays();
     </script>
 </body>
 </html>
