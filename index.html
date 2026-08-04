@@ -88,7 +88,7 @@
             left: 0;
             width: 6px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--accent-dday), var(--accent-robot));
+            background: linear-gradient(to bottom, var(--accent-memo), var(--accent-robot));
         }
 
         .profile-info h1 {
@@ -187,15 +187,23 @@
         .card.drone::after { background-color: var(--accent-drone); }
         .card.cad::after { background-color: var(--accent-cad); }
         .card.game::after { background-color: var(--accent-game); }
+        .card.dday::after { background-color: var(--accent-dday); }
         
-        .card.dday, .card.memo {
+        .card.memo {
+            grid-column: 1 / -1; /* 가로로 길게 전체 너비 사용 */
             cursor: default;
         }
-        .card.dday:hover, .card.memo:hover {
+        .card.memo:hover {
             transform: none;
         }
-        .card.dday::after { background-color: var(--accent-dday); }
         .card.memo::after { background-color: var(--accent-memo); }
+
+        .card.dday {
+            cursor: default;
+        }
+        .card.dday:hover {
+            transform: none;
+        }
 
         .card h2 {
             font-size: 1.2rem;
@@ -390,6 +398,49 @@
             color: white;
         }
 
+        /* 서브페이지 내부 박스 스타일 */
+        .nested-box {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .nested-box h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .shortcut-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .shortcut-table th, .shortcut-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .shortcut-table th {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .shortcut-key {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
         .drone-card-header {
             display: flex;
             align-items: center;
@@ -460,7 +511,7 @@
                     <span class="click-guide">👉 상세 내용 및 관련 링크 보러가기 &rarr;</span>
                 </div>
 
-                <div class="card cad" data-target="subCad" data-search="3D 모델링 슬라이싱 Autodesk Fusion 3D 프린팅 부품 설계">
+                <div class="card cad" data-target="subCad" data-search="3D 모델링 슬라이싱 Autodesk Fusion 3D 프린팅 부품 설계 단축키 단위환산기">
                     <h2>⚙️ 3D 모델링 & 슬라이싱</h2>
                     <div class="tag-container">
                         <span class="tag">Autodesk Fusion</span>
@@ -468,10 +519,10 @@
                         <span class="tag">부품 설계</span>
                     </div>
                     <p class="desc-text">오토데스크 퓨전을 활용한 구조물 CAD 모델링과 정밀 출력용 슬라이싱 소프트웨어 운용 프로젝트입니다.</p>
-                    <span class="click-guide">👉 상세 내용 및 관련 링크 보러가기 &rarr;</span>
+                    <span class="click-guide">👉 상세 내용 및 단축키 보러가기 &rarr;</span>
                 </div>
 
-                <div class="card game" data-target="subGame" data-search="게임 아카이브 Gaming Hub 발로란트 마인크래프트 FC Online">
+                <div class="card game" data-target="subGame" data-search="게임 아카이브 Gaming Hub 발로란트 마인크래프트 FC Online 명령어">
                     <h2>🎮 게임 아카이브 (Gaming Hub)</h2>
                     <div class="tag-container">
                         <span class="tag">발로란트</span>
@@ -479,7 +530,7 @@
                         <span class="tag">FC Online</span>
                     </div>
                     <p class="desc-text">여가 및 몰입을 위한 주요 플레이 게임들의 세계관 정의 및 공식 홈페이지 아카이브입니다.</p>
-                    <span class="click-guide">👉 게임 정의 및 공식 홈페이지 보러가기 &rarr;</span>
+                    <span class="click-guide">👉 게임 정의 및 마크 명령어 보러가기 &rarr;</span>
                 </div>
 
                 <div class="card dday" data-search="프로젝트 디데이 일정 관리">
@@ -624,8 +675,44 @@
                     <div>
                         <div class="sub-title">Autodesk Fusion (퓨전 3D)</div>
                         <div class="sub-desc">클라우드 기반의 강력한 CAD, CAM, CAE 소프트웨어로, 정밀한 기계 부품 설계와 3D 프린팅용 슬라이싱 데이터 제작의 핵심 툴로 활용됩니다.</div>
+                        
+                        <!-- 퓨전 360 빠른 단축키 서브 박스 -->
+                        <div class="nested-box">
+                            <h4>⌨️ Fusion 360 핵심 단축키</h4>
+                            <table class="shortcut-table">
+                                <tr><th>기능</th><th>단축키</th></tr>
+                                <tr><td>스케치 작성 (Sketch)</td><td><span class="shortcut-key">S</span> 또는 <span class="shortcut-key">L</span></td></tr>
+                                <tr><td>돌출 (Extrude)</td><td><span class="shortcut-key">E</span></td></tr>
+                                <tr><td>필렛 (Fillet)</td><td><span class="shortcut-key">F</span></td></tr>
+                                <tr><td>구멍 (Hole)</td><td><span class="shortcut-key">H</span></td></tr>
+                                <tr><td>치수 입력 (Dimension)</td><td><span class="shortcut-key">D</span></td></tr>
+                                <tr><td>이동 / 회전 (Move)</td><td><span class="shortcut-key">M</span></td></tr>
+                            </table>
+                        </div>
                     </div>
                     <a href="https://www.autodesk.co.kr/products/fusion-360" target="_blank" class="sub-link">오토데스크 퓨전 공식 홈</a>
+                </div>
+
+                <!-- 단위 환산기 서브 박스 -->
+                <div class="sub-card">
+                    <div>
+                        <div class="sub-title">🧮 단위 환산기 (Unit Converter)</div>
+                        <div class="sub-desc">3D 모델링이나 부품 설계 시 자주 쓰이는 mm와 인치(inch) 단위를 즉시 환산해 주는 도구입니다.</div>
+                        
+                        <div class="nested-box">
+                            <h4>📏 mm ⇄ inch 환산</h4>
+                            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                                <input type="number" id="unitInput" class="mini-input" placeholder="숫자 입력" value="10" style="width: 100%;">
+                                <select id="unitType" class="mini-input" style="width: 100px;">
+                                    <option value="mmToIn">mm &rarr; in</option>
+                                    <option value="inToMm">in &rarr; mm</option>
+                                </select>
+                            </div>
+                            <div id="unitResult" style="font-weight: 700; font-size: 1rem; color: var(--accent-cad); text-align: center; padding: 8px; background-color: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color);">
+                                결과: 0.3937 inch
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -643,13 +730,29 @@
                     </div>
                     <a href="https://playvalorant.com/ko-kr/" target="_blank" class="sub-link">공식 홈페이지 방문</a>
                 </div>
-                <div class="sub-card">
+                
+                <div class="sub-card" style="grid-column: 1 / -1;">
                     <div>
-                        <div class="sub-title">마인크래프트 (Minecraft)</div>
-                        <div class="sub-desc">블록을 배치하고 자유롭게 구조물을 건설하며 탐험과 창작을 즐기는 샌드박스 게임입니다.</div>
+                        <div class="sub-title">마인크래프트 (Minecraft) 아카이브 & 명령어 모음</div>
+                        <div class="sub-desc">블록을 배치하고 자유롭게 구조물을 건설하며 탐험과 창작을 즐기는 샌드박스 게임입니다. 건축 및 테스트에 유용한 핵심 명령어들을 아래에서 확인하세요.</div>
+                        
+                        <!-- 마인크래프트 명령어 서브 박스 -->
+                        <div class="nested-box">
+                            <h4>⌨️ 마인크래프트 필수 명령어 모음</h4>
+                            <table class="shortcut-table">
+                                <tr><th>종류</th><th>명령어 예시</th><th>설명</th></tr>
+                                <tr><td>게임 모드 변경</td><td><span class="shortcut-key">/gamemode creative</span></td><td>크리에이티브 모드로 전환</td></tr>
+                                <tr><td>날씨 변경</td><td><span class="shortcut-key">/weather clear</span></td><td>맑은 날씨로 고정</td></tr>
+                                <tr><td>시간 변경</td><td><span class="shortcut-key">/time set day</span></td><td>낮 시간으로 설정</td></tr>
+                                <tr><td>아이템 소환</td><td><span class="shortcut-key">/give [플레이어] [아이템] [개수]</span></td><td>특정 아이템 획득</td></tr>
+                                <tr><td>순간 이동</td><td><span class="shortcut-key">/tp [x] [y] [z]</span></td><td>지정한 좌표로 이동</td></tr>
+                                <tr><td>좌표 표시</td><td><span class="shortcut-key">F3 키 누름</span></td><td>현재 위치 좌표 및 디버그 확인</td></tr>
+                            </table>
+                        </div>
                     </div>
-                    <a href="https://www.minecraft.net/ko-kr" target="_blank" class="sub-link">공식 홈페이지 방문</a>
+                    <a href="https://www.minecraft.net/ko-kr" target="_blank" class="sub-link">마인크래프트 공식 홈페이지 방문</a>
                 </div>
+
                 <div class="sub-card">
                     <div>
                         <div class="sub-title">FC 온라인 (FC Online)</div>
@@ -823,6 +926,29 @@
             renderNotes();
         }
 
+        // Unit Converter Logic
+        const unitInput = document.getElementById('unitInput');
+        const unitType = document.getElementById('unitType');
+        const unitResult = document.getElementById('unitResult');
+
+        function updateConversion() {
+            const val = parseFloat(unitInput.value);
+            if(isNaN(val)) {
+                unitResult.textContent = "올바른 숫자를 입력하세요.";
+                return;
+            }
+            if(unitType.value === 'mmToIn') {
+                const res = (val / 25.4).toFixed(4);
+                unitResult.textContent = `결과: ${res} inch`;
+            } else {
+                const res = (val * 25.4).toFixed(2);
+                unitResult.textContent = `결과: ${res} mm`;
+            }
+        }
+
+        unitInput.addEventListener('input', updateConversion);
+        unitType.addEventListener('change', updateConversion);
+
         function escapeHtml(str) {
             return str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
@@ -831,6 +957,7 @@
 
         renderDdays();
         renderNotes();
+        updateConversion();
     </script>
 </body>
 </html>
