@@ -495,14 +495,14 @@
             <div class="dashboard-grid" id="dashboardGrid">
                 
                 <div class="card robot" data-target="subRobot" data-search="로보틱스 동아리 구조 설계 드라이버 FTC KRC 리쿠르팅">
-                    <h2>🤖 로보틱스 동아리</h2>
+                    <h2>🤖 로보틱스 동아리 (FTC)</h2>
                     <div class="tag-container">
                         <span class="tag">구조 설계 및 드라이버</span>
                         <span class="tag">FTC / KRC 출전</span>
-                        <span class="tag">리쿠르팅 및 운영</span>
+                        <span class="tag">비밀 프로젝트</span>
                     </div>
                     <p class="desc-text">로보틱스 동아리에서 메인 드라이버 및 구조 설계 담당으로서 FTC, KRC 대회를 준비하고 부원 모집 프레젠테이션을 주도하는 핵심 프로젝트입니다.</p>
-                    <span class="click-guide">👉 상세 내용 및 아이디어 노트 보러가기 &rarr;</span>
+                    <span class="click-guide">👉 FTC 비밀 페이지 보러가기 &rarr;</span>
                 </div>
 
                 <div class="card drone" data-target="subDrone" data-search="드론 종합 정보 허브 기술 자격증 시뮬레이터 법규 DJI Skydio Autel">
@@ -598,7 +598,7 @@
         <div id="subRobot" class="view-section">
             <div class="sub-header">
                 <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
-                <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--accent-robot);">🤖 로보틱스 동아리 상세 정보</h2>
+                <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--accent-robot);">🤖 로보틱스 동아리 (FTC) 상세 정보</h2>
             </div>
             <div class="sub-grid">
                 <div class="sub-card">
@@ -874,6 +874,13 @@
             if (query === 'dooly.09') {
                 views.forEach(v => v.classList.remove('active'));
                 document.getElementById('subSecret').classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            if (query === 'ftc') {
+                views.forEach(v => v.classList.remove('active'));
+                document.getElementById('subRobot').classList.add('active');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 return;
             }
