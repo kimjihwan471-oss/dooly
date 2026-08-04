@@ -1,0 +1,816 @@
+html_content = """<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jihwan's Hub</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --tag-bg: #eff6ff;
+            --tag-text: #1e40af;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            
+            --accent-robot: #3b82f6;
+            --accent-drone: #06b6d4;
+            --accent-cad: #10b981;
+            --accent-game: #ec4899;
+            --accent-memo: #8b5cf6;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #030712;
+            --card-bg: #111827;
+            --text-color: #f9fafb;
+            --text-secondary: #9ca3af;
+            --border-color: #1f2937;
+            --primary: #3b82f6;
+            --primary-hover: #60a5fa;
+            --tag-bg: #1e3a8a;
+            --tag-text: #93c5fd;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+            
+            --accent-robot: #60a5fa;
+            --accent-drone: #22d3ee;
+            --accent-cad: #34d399;
+            --accent-game: #f472b6;
+            --accent-memo: #a78bfa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 24px 32px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-robot), var(--accent-drone));
+        }
+
+        .profile-info h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-info p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* 검색창 바 스타일 */
+        .search-bar-container {
+            margin-bottom: 24px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 16px;
+            font-size: 1rem;
+            box-shadow: var(--shadow);
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        /* 화면 전환 뷰 설정 */
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 대시보드 그리드 */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+
+        .card.robot::after { background-color: var(--accent-robot); }
+        .card.drone::after { background-color: var(--accent-drone); }
+        .card.cad::after { background-color: var(--accent-cad); }
+        .card.game::after { background-color: var(--accent-game); }
+        
+        .card.memo {
+            cursor: default;
+        }
+        .card.memo:hover {
+            transform: none;
+        }
+        .card.memo::after { background-color: var(--accent-memo); }
+
+        .card h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .click-guide {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-top: 14px;
+            display: inline-block;
+        }
+        .card.robot .click-guide { color: var(--accent-robot); }
+        .card.drone .click-guide { color: var(--accent-drone); }
+        .card.cad .click-guide { color: var(--accent-cad); }
+        .card.game .click-guide { color: var(--accent-game); }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .desc-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .mini-todo-form {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .mini-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .mini-input:focus {
+            border-color: var(--accent-memo);
+        }
+
+        .mini-btn {
+            padding: 0 16px;
+            background-color: var(--accent-memo);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .mini-btn:hover {
+            opacity: 0.9;
+        }
+
+        .item-list {
+            list-style: none;
+            margin-top: 14px;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .delete-item {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* 상세 서브페이지 공통 스타일 */
+        .sub-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .back-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background-color: var(--border-color);
+        }
+
+        .sub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .sub-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sub-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .sub-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .sub-link {
+            display: inline-block;
+            text-align: center;
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        .sub-link:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .drone-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .company-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            object-fit: contain;
+            background-color: var(--bg-color);
+            padding: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .drone-img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <!-- 상단 프로필 영역 -->
+        <header>
+            <div class="profile-info">
+                <h1>Jihwan의 프로젝트 허브</h1>
+                <p>로보틱스 · 드론 제작 · 3D 모델링 · 게임 아카이브</p>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙 다크모드</button>
+        </header>
+
+        <!-- VIEW 1: 메인 대시보드 -->
+        <div id="mainView" class="view-section active">
+            <!-- 검색창 영역 -->
+            <div class="search-bar-container">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" class="search-input" placeholder="검색어를 입력하세요 (비밀 키워드: dooly.09)..." autocomplete="off">
+                </div>
+            </div>
+
+            <div class="dashboard-grid" id="dashboardGrid">
+                
+                <!-- 1. 로보틱스 프로젝트 박스 -->
+                <div class="card robot" data-target="subRobot" data-search="로보틱스 동아리 구조 설계 드라이버 FTC KRC 리쿠르팅">
+                    <h2>🤖 로보틱스 동아리</h2>
+                    <div class="tag-container">
+                        <span class="tag">구조 설계 및 드라이버</span>
+                        <span class="tag">FTC / KRC 출전</span>
+                        <span class="tag">리쿠르팅 및 운영</span>
+                    </div>
+                    <p class="desc-text">로보틱스 동아리에서 메인 드라이버 및 구조 설계 담당으로서 FTC, KRC 대회를 준비하고 부원 모집 프레젠테이션을 주도하는 핵심 프로젝트입니다.</p>
+                    <span class="click-guide">👉 상세 내용 및 관련 링크 보러가기 &rarr;</span>
+                </div>
+
+                <!-- 2. 드론 판매 및 제품 박스 -->
+                <div class="card drone" data-target="subDrone" data-search="글로벌 드론 브랜드 인기 제품 DJI Skydio Autel Robotics">
+                    <h2>🛸 글로벌 드론 브랜드 & 인기 제품</h2>
+                    <div class="tag-container">
+                        <span class="tag">DJI</span>
+                        <span class="tag">Skydio</span>
+                        <span class="tag">Autel Robotics</span>
+                    </div>
+                    <p class="desc-text">세계적인 드론 제조·판매 대표 기업들의 핵심 특징과 각 브랜드별 인기 주력 제품 라인업을 비교·분석하는 허브입니다.</p>
+                    <span class="click-guide">👉 상세 내용 및 관련 링크 보러가기 &rarr;</span>
+                </div>
+
+                <!-- 3. 3D 모델링 박스 -->
+                <div class="card cad" data-target="subCad" data-search="3D 모델링 슬라이싱 Autodesk Fusion 3D 프린팅 부품 설계">
+                    <h2>⚙️ 3D 모델링 & 슬라이싱</h2>
+                    <div class="tag-container">
+                        <span class="tag">Autodesk Fusion</span>
+                        <span class="tag">3D 프린팅</span>
+                        <span class="tag">부품 설계</span>
+                    </div>
+                    <p class="desc-text">오토데스크 퓨전을 활용한 구조물 CAD 모델링과 정밀 출력용 슬라이싱 소프트웨어 운용 프로젝트입니다.</p>
+                    <span class="click-guide">👉 상세 내용 및 관련 링크 보러가기 &rarr;</span>
+                </div>
+
+                <!-- 4. 게임 & 취미 박스 -->
+                <div class="card game" data-target="subGame" data-search="게임 아카이브 Gaming Hub 발로란트 마인크래프트 FC Online">
+                    <h2>🎮 게임 아카이브 (Gaming Hub)</h2>
+                    <div class="tag-container">
+                        <span class="tag">발로란트</span>
+                        <span class="tag">마인크래프트</span>
+                        <span class="tag">FC Online</span>
+                    </div>
+                    <p class="desc-text">여가 및 몰입을 위한 주요 플레이 게임들의 세계관 정의 및 공식 홈페이지 아카이브입니다.</p>
+                    <span class="click-guide">👉 게임 정의 및 공식 홈페이지 보러가기 &rarr;</span>
+                </div>
+
+                <!-- 5. 메모장 박스 (고정) -->
+                <div class="card memo" data-search="개인 메모장 To-Do 일정 기록">
+                    <h2>📌 개인 메모장 & To-Do</h2>
+                    <p class="desc-text">프로젝트 아이디어나 일정을 자유롭게 기록할 수 있는 공간입니다.</p>
+                    <form class="mini-todo-form" id="todoForm">
+                        <input type="text" class="mini-input" id="todoInput" placeholder="할 일이나 아이디어 입력..." required autocomplete="off">
+                        <button type="submit" class="mini-btn">추가</button>
+                    </form>
+                    <ul class="item-list" id="todoList">
+                        <!-- JS로 동적 생성 -->
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- VIEW: 검색 결과 전용 서브페이지 (dooly.09 입력 시) -->
+        <div id="subKeywordResult" class="view-section">
+            <div class="sub-header">
+                <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
+                <h2 id="keywordPageTitle" style="font-size: 1.4rem; font-weight: 700; color: var(--primary);">✨ 시크릿 프로필 페이지</h2>
+            </div>
+            <div class="sub-grid" id="keywordResultGrid">
+                <!-- 동적으로 채워짐 -->
+            </div>
+        </div>
+
+        <!-- VIEW: 로보틱스 동아리 상세 페이지 -->
+        <div id="subRobot" class="view-section">
+            <div class="sub-header">
+                <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
+                <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--accent-robot);">🤖 로보틱스 동아리 상세 정보</h2>
+            </div>
+            <div class="sub-grid">
+                <div class="sub-card">
+                    <div>
+                        <div class="sub-title">동아리 역할 및 활동</div>
+                        <div class="sub-desc">로보틱스 동아리의 메인 드라이버이자 구조 설계 담당으로서 로봇 메커니즘을 조율합니다. 신규 부원 모집 프레젠테이션 스피치 기획부터 대회 실전 주행까지 전반적인 활동을 총괄합니다.</div>
+                    </div>
+                    <a href="https://www.fest.or.kr/" target="_blank" class="sub-link">창의공학교육협회 (FEST) 공식 홈페이지</a>
+                </div>
+
+                <div class="sub-card">
+                    <div>
+                        <div class="sub-title">FTC 스카웃 (Team Profiles)</div>
+                        <div class="sub-desc">FIRST Tech Challenge 대회에 등록된 팀들의 상세한 정보와 로봇 스펙을 확인할 수 있는 FTC 스카웃 공식 프로필 페이지입니다.</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <a href="https://ftcscout.org/teams/28646" target="_blank" class="sub-link" style="margin-top: 0;">FTC #28646 팀 프로필 보러가기</a>
+                        <a href="https://ftcscout.org/teams/28649" target="_blank" class="sub-link" style="margin-top: 0;">FTC #28649 팀 프로필 보러가기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: 드론 판매 및 인기 제품 상세 페이지 -->
+        <div id="subDrone" class="view-section">
+            <div class="sub-header">
+                <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
+                <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--accent-drone);">🛸 글로벌 드론 제조사 및 인기 제품</h2>
+            </div>
+            <div class="sub-grid">
+                <div class="sub-card">
+                    <div>
+                        <div class="drone-card-header">
+                            <img src="https://www.dji.com/favicon.ico" alt="DJI Logo" class="company-logo">
+                            <div class="sub-title" style="margin-bottom:0;">DJI (디제이아이)</div>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=600&q=80" alt="DJI Drone" class="drone-img">
+                        <div class="sub-desc">
+                            글로벌 시장 점유율 1위의 드론 선도 기업.<br>
+                            • <strong>주력 제품 1:</strong> DJI Matrice 300 RTK (산업용 정밀 점검 최적화)<br>
+                            • <strong>주력 제품 2:</strong> DJI Mini 3 Pro (초경량 고성능 촬영용)
+                        </div>
+                    </div>
+                    <a href="https://www.dji.com/kr" target="_blank" class="sub-link">DJI 공식 홈페이지</a>
+                </div>
+
+                <div class="sub-card">
+                    <div>
+                        <div class="drone-card-header">
+                            <img src="https://www.skydio.com/favicon.ico" alt="Skydio Logo" class="company-logo">
+                            <div class="sub-title" style="margin-bottom:0;">Skydio (스카이디오)</div>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" alt="Skydio Drone" class="drone-img">
+                        <div class="sub-desc">
+                            미국 선도 드론 제조사이자 자율 비행·장애물 회피 기술 분야의 리더.<br>
+                            • <strong>주력 제품 1:</strong> Skydio 2+ (AI 기반 완전 자율 비행)<br>
+                            • <strong>주력 제품 2:</strong> Skydio X2 (기업 및 방위 산업용 중장비 드론)
+                        </div>
+                    </div>
+                    <a href="https://www.skydio.com" target="_blank" class="sub-link">Skydio 공식 홈페이지</a>
+                </div>
+
+                <div class="sub-card">
+                    <div>
+                        <div class="drone-card-header">
+                            <img src="https://www.autelrobotics.com/favicon.ico" alt="Autel Logo" class="company-logo">
+                            <div class="sub-title" style="margin-bottom:0;">Autel Robotics</div>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=600&q=80" alt="Autel Drone" class="drone-img">
+                        <div class="sub-desc">
+                            고성능 카메라와 빠른 반응 속도로 DJI의 강력한 대안으로 꼽히는 제조사.<br>
+                            • <strong>주력 제품 1:</strong> EVO II Dual 640T (열화상 및 RGB 동시 촬영)<br>
+                            • <strong>주력 제품 2:</strong> EVO Lite+ (야간 촬영 및 광학 성능 특화)
+                        </div>
+                    </div>
+                    <a href="https://www.autelrobotics.com" target="_blank" class="sub-link">Autel 공식 홈페이지</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: 3D 모델링 상세 페이지 -->
+        <div id="subCad" class="view-section">
+            <div class="sub-header">
+                <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
+                <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--accent-cad);">⚙️ 3D 모델링 & 슬라이싱 아카이브</h2>
+            </div>
+            <div class="sub-grid">
+                <div class="sub-card">
+                    <div>
+                        <div class="sub-title">Autodesk Fusion (퓨전 3D)</div>
+                        <div class="sub-desc">클라우드 기반의 강력한 CAD, CAM, CAE 소프트웨어로, 정밀한 기계 부품 설계와 3D 프린팅용 슬라이싱 데이터 제작의 핵심 툴로 활용됩니다.</div>
+                    </div>
+                    <a href="https://www.autodesk.co.kr/products/fusion-360" target="_blank" class="sub-link">오토데스크 퓨전 공식 홈</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: 게임 상세 페이지 -->
+        <div id="subGame" class="view-section">
+            <div class="sub-header">
+                <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
+                <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--accent-game);">🎮 게임 아카이브 (Gaming Hub)</h2>
+            </div>
+            <div class="sub-grid">
+                <div class="sub-card">
+                    <div>
+                        <div class="sub-title">발로란트 (VALORANT)</div>
+                        <div class="sub-desc">5대5 캐릭터 기반 전술 슈팅(FPS) 게임으로, 고유 스킬과 사격 실력을 조합해 승리를 겨룹니다.</div>
+                    </div>
+                    <a href="https://playvalorant.com/ko-kr/" target="_blank" class="sub-link">공식 홈페이지 방문</a>
+                </div>
+                <div class="sub-card">
+                    <div>
+                        <div class="sub-title">마인크래프트 (Minecraft)</div>
+                        <div class="sub-desc">B블록을 배치하고 자유롭게 구조물을 건설하며 탐험과 창작을 즐기는 샌드박스 게임입니다.</div>
+                    </div>
+                    <a href="https://www.minecraft.net/ko-kr" target="_blank" class="sub-link">공식 홈페이지 방문</a>
+                </div>
+                <div class="sub-card">
+                    <div>
+                        <div class="sub-title">FC 온라인 (FC Online)</div>
+                        <div class="sub-desc">실제 축구 선수 라이선스를 기반으로 드림 팀을 꾸려 경기를 치르는 정통 축구 게임입니다.</div>
+                    </div>
+                    <a href="https://fconline.nexon.com/" target="_blank" class="sub-link">공식 홈페이지 방문</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. 다크모드 토글
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                htmlElement.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️ 라이트모드';
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+                themeToggle.textContent = '🌙 다크모드';
+            }
+        });
+
+        // 2. 검색창 키워드 입력 및 엔터 라우팅 기능
+        const searchInput = document.getElementById('searchInput');
+        const mainView = document.getElementById('mainView');
+        const views = document.querySelectorAll('.view-section');
+        const cards = document.querySelectorAll('.dashboard-grid .card');
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const query = searchInput.value.trim().toLowerCase();
+                if (!query) return;
+
+                if (query === 'dooly.09' || query === 'dooly') {
+                    openDoolySpecialPage();
+                } else {
+                    // 일반 검색어는 카드 필터링
+                    cards.forEach(card => {
+                        const searchKeyword = card.getAttribute('data-search').toLowerCase();
+                        const cardText = card.textContent.toLowerCase();
+                        if (searchKeyword.includes(query) || cardText.includes(query)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+            }
+        });
+
+        // 실시간 입력 시 검색어 비어있으면 카드 전체 복구
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (query === '') {
+                cards.forEach(card => card.style.display = 'block');
+            }
+        });
+
+        // 'dooly.09' 전용 서브페이지 생성 함수 (개인 정보 반영)
+        function openDoolySpecialPage() {
+            views.forEach(v => v.classList.remove('active'));
+            const resultView = document.getElementById('subKeywordResult');
+            const resultGrid = document.getElementById('keywordResultGrid');
+            const titleEl = document.getElementById('keywordPageTitle');
+
+            titleEl.textContent = `✨ 시크릿 프로필: dooly.09 (Jihwan의 공간)`;
+            
+            resultGrid.innerHTML = `
+                <div class="sub-card" style="border-top: 4px solid var(--accent-robot);">
+                    <div>
+                        <div class="sub-title">👤 기본 프로필 정보</div>
+                        <div class="sub-desc">
+                            • <strong>이름:</strong> Jihwan (지환)<br>
+                            • <strong>생년월일:</strong> 2009년 8월 23일<br>
+                            • <strong>현재 거주지역:</strong> 경기도 평택시<br>
+                            • <strong>소속:</strong> 라온고등학교 2학년
+                        </div>
+                    </div>
+                    <a href="#" class="sub-link" onclick="goHome(); return false;">메인으로 돌아가기</a>
+                </div>
+                <div class="sub-card" style="border-top: 4px solid var(--accent-drone);">
+                    <div>
+                        <div class="sub-title">🚀 진로 및 주요 관심사</div>
+                        <div class="sub-desc">
+                            • <strong>희망 진로:</strong> 드론 제작자 및 엔지니어<br>
+                            • <strong>주요 활동:</strong> 로보틱스 동아리(FTC/KRC 구조 설계 및 메인 드라이버), 드론 시뮬레이터 및 조종 기술 연마<br>
+                            • <strong>기술 스택:</strong> Autodesk Fusion 3D 모델링, 3D 프린팅 슬라이싱
+                        </div>
+                    </div>
+                    <a href="https://ftcscout.org/teams/28646" target="_blank" class="sub-link">관련 링크 확인하기</a>
+                </div>
+            `;
+
+            resultView.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 3. 카드 클릭 시 서브페이지 전환 라우팅
+        document.querySelectorAll('.card[data-target]').forEach(card => {
+            card.addEventListener('click', () => {
+                const targetId = card.getAttribute('data-target');
+                views.forEach(v => v.classList.remove('active'));
+                document.getElementById(targetId).classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        function goHome() {
+            views.forEach(v => v.classList.remove('active'));
+            mainView.classList.add('active', 'fade-in');
+            searchInput.value = '';
+            cards.forEach(card => card.style.display = 'block');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 4. 메모장 기능 (LocalStorage 연동)
+        const todoForm = document.getElementById('todoForm');
+        const todoInput = document.getElementById('todoInput');
+        const todoList = document.getElementById('todoList');
+
+        let notes = JSON.parse(localStorage.getItem('project_notes')) || [
+            { text: '로보틱스 부품 점검 및 정비' },
+            { text: '드론 사양 비교 자료 정리' }
+        ];
+
+        function renderNotes() {
+            todoList.innerHTML = '';
+            notes.forEach((note, index) => {
+                const li = document.createElement('li');
+                li.className = 'item-row';
+                li.innerHTML = `
+                    <span>${escapeHtml(note.text)}</span>
+                    <button class="delete-item" onclick="deleteNote(${index})">삭제</button>
+                `;
+                todoList.appendChild(li);
+            });
+            localStorage.setItem('project_notes', JSON.stringify(notes));
+        }
+
+        todoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = todoInput.value.trim();
+            if(text) {
+                notes.push({ text });
+                todoInput.value = '';
+                renderNotes();
+            }
+        });
+
+        window.deleteNote = function(index) {
+            notes.splice(index, 1);
+            renderNotes();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ${({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        renderNotes();
+    </script>
+</body>
+</html>
+"""
+
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
