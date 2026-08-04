@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jihwan's Projects Hub</title>
+    <title>둘리의 프로젝트 허브</title>
     <style>
         :root {
             --bg-color: #f8fafc;
@@ -88,7 +88,7 @@
             left: 0;
             width: 6px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--accent-robot), var(--accent-drone));
+            background: linear-gradient(to bottom, var(--accent-dday), var(--accent-robot));
         }
 
         .profile-info h1 {
@@ -436,7 +436,7 @@
     <div class="wrapper">
         <header>
             <div class="profile-info">
-                <h1>Jihwan의 프로젝트 허브</h1>
+                <h1>둘리의 프로젝트 허브</h1>
                 <p>로보틱스 · 드론 제작 · 3D 모델링 · 게임 아카이브</p>
             </div>
             <button class="theme-toggle" id="themeToggle">🌙 다크모드</button>
@@ -449,6 +449,19 @@
 
             <div class="dashboard-grid" id="dashboardGrid">
                 
+                <div class="card dday" data-search="디데이 D-Day 일정 카운터">
+                    <h2>⏳ 프로젝트 디데이 & 일정</h2>
+                    <p class="desc-text">중요한 대회나 시험까지 남은 날짜를 실시간으로 확인합니다.</p>
+                    <form class="dday-form" id="ddayForm">
+                        <input type="text" class="mini-input" id="ddayTitleInput" placeholder="일정 이름 (예: FTC 대회)" required autocomplete="off">
+                        <div class="dday-inputs">
+                            <input type="date" class="dday-input" id="ddayDateInput" required>
+                            <button type="submit" class="mini-btn dday-btn">D-Day 추가</button>
+                        </div>
+                    </form>
+                    <ul class="item-list" id="ddayList"></ul>
+                </div>
+
                 <div class="card robot" data-target="subRobot" data-search="로보틱스 동아리 구조 설계 드라이버 FTC KRC 리쿠르팅">
                     <h2>🤖 로보틱스 동아리</h2>
                     <div class="tag-container">
@@ -491,19 +504,6 @@
                     </div>
                     <p class="desc-text">여가 및 몰입을 위한 주요 플레이 게임들의 세계관 정의 및 공식 홈페이지 아카이브입니다.</p>
                     <span class="click-guide">👉 게임 정의 및 공식 홈페이지 보러가기 &rarr;</span>
-                </div>
-
-                <div class="card dday" data-search="디데이 D-Day 일정 카운터">
-                    <h2>⏳ 프로젝트 디데이 & 일정</h2>
-                    <p class="desc-text">중요한 대회나 시험까지 남은 날짜를 실시간으로 확인합니다.</p>
-                    <form class="dday-form" id="ddayForm">
-                        <input type="text" class="mini-input" id="ddayTitleInput" placeholder="일정 이름 (예: FTC 대회)" required autocomplete="off">
-                        <div class="dday-inputs">
-                            <input type="date" class="dday-input" id="ddayDateInput" required>
-                            <button type="submit" class="mini-btn dday-btn">D-Day 추가</button>
-                        </div>
-                    </form>
-                    <ul class="item-list" id="ddayList"></ul>
                 </div>
 
                 <div class="card memo" data-search="개인 메모장 To-Do 일정 기록">
@@ -675,7 +675,6 @@
         const themeToggle = document.getElementById('themeToggle');
         const htmlElement = document.documentElement;
 
-        // 테마 로드 및 설정 유지
         const savedTheme = localStorage.getItem('site_theme') || 'light';
         htmlElement.setAttribute('data-theme', savedTheme);
         themeToggle.textContent = savedTheme === 'dark' ? '☀️ 라이트모드' : '🌙 다크모드';
@@ -736,7 +735,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // To-Do 메모장 기능
         const todoForm = document.getElementById('todoForm');
         const todoInput = document.getElementById('todoInput');
         const todoList = document.getElementById('todoList');
@@ -775,7 +773,6 @@
             renderNotes();
         }
 
-        // D-Day 카운터 기능
         const ddayForm = document.getElementById('ddayForm');
         const ddayTitleInput = document.getElementById('ddayTitleInput');
         const ddayDateInput = document.getElementById('ddayDateInput');
