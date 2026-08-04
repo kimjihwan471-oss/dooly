@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dooly's Projects Hub</title>
+    <title>Jihwan's Projects Hub</title>
     <style>
         :root {
             --bg-color: #f8fafc;
@@ -17,13 +17,12 @@
             --tag-text: #1e40af;
             --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
             
-            /* 프로젝트별 포인트 컬러 */
             --accent-robot: #3b82f6;
             --accent-drone: #06b6d4;
             --accent-cad: #10b981;
             --accent-game: #ec4899;
             --accent-memo: #8b5cf6;
-            --accent-secret: #f59e0b; /* 비밀 페이지 포인트 컬러 */
+            --accent-secret: #f59e0b;
         }
 
         [data-theme="dark"] {
@@ -66,7 +65,6 @@
             margin: 0 auto;
         }
 
-        /* 상단 프로필 바 */
         header {
             display: flex;
             justify-content: space-between;
@@ -119,7 +117,6 @@
             transform: translateY(-2px);
         }
 
-        /* 검색창 바 스타일 */
         .search-bar-container {
             margin-bottom: 24px;
         }
@@ -140,7 +137,6 @@
             border-color: var(--primary);
         }
 
-        /* 화면 전환 뷰 설정 */
         .view-section {
             display: none;
         }
@@ -155,7 +151,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 대시보드 그리드 */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
@@ -186,7 +181,6 @@
             height: 4px;
         }
 
-        /* 카드별 상단 라인 컬러 */
         .card.robot::after { background-color: var(--accent-robot); }
         .card.drone::after { background-color: var(--accent-drone); }
         .card.cad::after { background-color: var(--accent-cad); }
@@ -220,7 +214,6 @@
         .card.cad .click-guide { color: var(--accent-cad); }
         .card.game .click-guide { color: var(--accent-game); }
 
-        /* 태그 스타일 */
         .tag-container {
             display: flex;
             flex-wrap: wrap;
@@ -244,7 +237,6 @@
             margin-bottom: 12px;
         }
 
-        /* 메모장 컴포넌트 */
         .mini-todo-form {
             display: flex;
             gap: 8px;
@@ -310,7 +302,6 @@
             font-weight: 600;
         }
 
-        /* 상세 서브페이지 공통 스타일 */
         .sub-header {
             display: flex;
             align-items: center;
@@ -381,7 +372,6 @@
             color: white;
         }
 
-        /* 드론 페이지 전용 스타일 */
         .drone-card-header {
             display: flex;
             align-items: center;
@@ -415,25 +405,21 @@
 <body>
 
     <div class="wrapper">
-        <!-- 상단 프로필 영역 -->
         <header>
             <div class="profile-info">
-                <h1>둘리(Dooly)의 프로젝트 허브</h1>
-                <p>로보틱스 · 드론 판매 및 제품 · 3D 모델링 · 게임 아카이브</p>
+                <h1>Jihwan의 프로젝트 허브</h1>
+                <p>로보틱스 · 드론 제작 · 3D 모델링 · 게임 아카이브</p>
             </div>
             <button class="theme-toggle" id="themeToggle">🌙 다크모드</button>
         </header>
 
-        <!-- VIEW 1: 메인 대시보드 -->
         <div id="mainView" class="view-section active">
-            <!-- 검색창 영역 (예시 문구 제거됨) -->
             <div class="search-bar-container">
-                <input type="text" id="searchInput" class="search-input" placeholder="" autocomplete="off">
+                <input type="text" id="searchInput" class="search-input" placeholder="검색어를 입력하세요 (비밀 키워드: dooly.09)..." autocomplete="off">
             </div>
 
             <div class="dashboard-grid" id="dashboardGrid">
                 
-                <!-- 1. 로보틱스 프로젝트 박스 -->
                 <div class="card robot" data-target="subRobot" data-search="로보틱스 동아리 구조 설계 드라이버 FTC KRC 리쿠르팅">
                     <h2>🤖 로보틱스 동아리</h2>
                     <div class="tag-container">
@@ -445,7 +431,6 @@
                     <span class="click-guide">👉 상세 내용 및 관련 링크 보러가기 &rarr;</span>
                 </div>
 
-                <!-- 2. 드론 판매 및 제품 박스 -->
                 <div class="card drone" data-target="subDrone" data-search="글로벌 드론 브랜드 인기 제품 DJI Skydio Autel Robotics">
                     <h2>🛸 글로벌 드론 브랜드 & 인기 제품</h2>
                     <div class="tag-container">
@@ -457,7 +442,6 @@
                     <span class="click-guide">👉 상세 내용 및 관련 링크 보러가기 &rarr;</span>
                 </div>
 
-                <!-- 3. 3D 모델링 박스 -->
                 <div class="card cad" data-target="subCad" data-search="3D 모델링 슬라이싱 Autodesk Fusion 3D 프린팅 부품 설계">
                     <h2>⚙️ 3D 모델링 & 슬라이싱</h2>
                     <div class="tag-container">
@@ -469,7 +453,6 @@
                     <span class="click-guide">👉 상세 내용 및 관련 링크 보러가기 &rarr;</span>
                 </div>
 
-                <!-- 4. 게임 & 취미 박스 -->
                 <div class="card game" data-target="subGame" data-search="게임 아카이브 Gaming Hub 발로란트 마인크래프트 FC Online">
                     <h2>🎮 게임 아카이브 (Gaming Hub)</h2>
                     <div class="tag-container">
@@ -481,7 +464,6 @@
                     <span class="click-guide">👉 게임 정의 및 공식 홈페이지 보러가기 &rarr;</span>
                 </div>
 
-                <!-- 5. 메모장 박스 (고정) -->
                 <div class="card memo" data-search="개인 메모장 To-Do 일정 기록">
                     <h2>📌 개인 메모장 & To-Do</h2>
                     <p class="desc-text">프로젝트 아이디어나 일정을 자유롭게 기록할 수 있는 공간입니다.</p>
@@ -489,15 +471,12 @@
                         <input type="text" class="mini-input" id="todoInput" placeholder="할 일이나 아이디어 입력..." required autocomplete="off">
                         <button type="submit" class="mini-btn">추가</button>
                     </form>
-                    <ul class="item-list" id="todoList">
-                        <!-- JS로 동적 생성 -->
-                    </ul>
+                    <ul class="item-list" id="todoList"></ul>
                 </div>
 
             </div>
         </div>
 
-        <!-- VIEW: 비밀 프로필 서브페이지 (dooly.09 입력 시 등장) -->
         <div id="subSecret" class="view-section">
             <div class="sub-header">
                 <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
@@ -522,7 +501,6 @@
             </div>
         </div>
 
-        <!-- VIEW: 로보틱스 동아리 상세 페이지 -->
         <div id="subRobot" class="view-section">
             <div class="sub-header">
                 <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
@@ -549,7 +527,6 @@
             </div>
         </div>
 
-        <!-- VIEW: 드론 판매 및 인기 제품 상세 페이지 -->
         <div id="subDrone" class="view-section">
             <div class="sub-header">
                 <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
@@ -604,7 +581,6 @@
             </div>
         </div>
 
-        <!-- VIEW: 3D 모델링 상세 페이지 -->
         <div id="subCad" class="view-section">
             <div class="sub-header">
                 <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
@@ -621,7 +597,6 @@
             </div>
         </div>
 
-        <!-- VIEW: 게임 상세 페이지 -->
         <div id="subGame" class="view-section">
             <div class="sub-header">
                 <button class="back-btn" onclick="goHome()">&larr; 메인으로 돌아가기</button>
@@ -655,7 +630,6 @@
     </div>
 
     <script>
-        // 1. 다크모드 토글
         const themeToggle = document.getElementById('themeToggle');
         const htmlElement = document.documentElement;
 
@@ -670,7 +644,6 @@
             }
         });
 
-        // 2. 실시간 검색창 필터링 및 'dooly.09' 비밀 서브페이지 라우팅 기능
         const searchInput = document.getElementById('searchInput');
         const cards = document.querySelectorAll('.dashboard-grid .card');
         const mainView = document.getElementById('mainView');
@@ -679,7 +652,6 @@
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase().trim();
 
-            // 검색창에 'dooly.09'를 입력하면 비밀 서브페이지로 전환
             if (query === 'dooly.09') {
                 views.forEach(v => v.classList.remove('active'));
                 document.getElementById('subSecret').classList.add('active');
@@ -687,7 +659,6 @@
                 return;
             }
 
-            // 일반 카드 필터링
             cards.forEach(card => {
                 const searchKeyword = card.getAttribute('data-search').toLowerCase();
                 const cardText = card.textContent.toLowerCase();
@@ -699,7 +670,6 @@
             });
         });
 
-        // 3. 카드 클릭 시 서브페이지 전환 라우팅
         document.querySelectorAll('.card[data-target]').forEach(card => {
             card.addEventListener('click', () => {
                 const targetId = card.getAttribute('data-target');
@@ -712,13 +682,11 @@
         function goHome() {
             views.forEach(v => v.classList.remove('active'));
             mainView.classList.add('active');
-            searchInput.value = ''; // 검색창 초기화
-            // 카드 표시 상태 원복
+            searchInput.value = '';
             cards.forEach(card => card.style.display = 'block');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 4. 메모장 기능 (LocalStorage 연동)
         const todoForm = document.getElementById('todoForm');
         const todoInput = document.getElementById('todoInput');
         const todoList = document.getElementById('todoList');
