@@ -622,6 +622,83 @@
 
                 <div class="sub-card" style="grid-column: 1 / -1;">
                     <div>
+		<!-- FTC 대회 규정 체크리스트 박스 시작 -->
+<div class="robotics-card" style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 20px; background-color: #fff;">
+    <h3 style="margin-top: 0; color: #333;">📋 FTC 대회 규정 및 검차 체크리스트</h3>
+    <p style="font-size: 13px; color: #666;">대회 전 필수 점검 사항을 체크하고 누락을 방지하세요.</p>
+    
+    <ul id="rule-checklist" style="list-style: none; padding: 0;">
+        <li style="margin-bottom: 10px;">
+            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" data-id="rule-1" onchange="saveChecklist()" style="width: 18px; height: 18px;"> 
+                <span>로봇 크기 규정 확인 (스타트 시 18인치 쿠브 이내)</span>
+            </label>
+        </li>
+        <li style="margin-bottom: 10px;">
+            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" data-id="rule-2" onchange="saveChecklist()" style="width: 18px; height: 18px;"> 
+                <span>로봇 총 무게 제한 확인 (배터리·전장 포함 규정 무게 이내)</span>
+            </label>
+        </li>
+        <li style="margin-bottom: 10px;">
+            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" data-id="rule-3" onchange="saveChecklist()" style="width: 18px; height: 18px;"> 
+                <span>메인 전원 스위치 위치 및 접근성 확보 (심판진 쉽게 조작 가능)</span>
+            </label>
+        </li>
+        <li style="margin-bottom: 10px;">
+            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" data-id="rule-4" onchange="saveChecklist()" style="width: 18px; height: 18px;"> 
+                <span>팀 번호판(Team Marker) 규격 및 부착 위치 확인</span>
+            </label>
+        </li>
+        <li style="margin-bottom: 10px;">
+            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" data-id="rule-5" onchange="saveChecklist()" style="width: 18px; height: 18px;"> 
+                <span>허용된 배터리(LiPo 등) 사용 및 전압 상태 완충 확인</span>
+            </label>
+        </li>
+        <li style="margin-bottom: 10px;">
+            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" data-id="rule-6" onchange="saveChecklist()" style="width: 18px; height: 18px;"> 
+                <span>비상 정지/소프트웨어 제어 안전 장치 테스트 완료</span>
+            </label>
+        </li>
+    </ul>
+    
+    <button onclick="resetChecklist()" style="padding: 6px 12px; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-size: 12px;">체크 초기화</button>
+</div>
+
+<script>
+    // 페이지가 열릴 때 저장된 체크 상태 불러오기
+    window.addEventListener('DOMContentLoaded', () => {
+        const checkboxes = document.querySelectorAll('#rule-checklist input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            const savedState = localStorage.getItem(cb.getAttribute('data-id'));
+            if (savedState === 'true') {
+                cb.checked = true;
+            }
+        });
+    });
+
+    // 체크 상태를 로컬스토리지에 저장
+    function saveChecklist() {
+        const checkboxes = document.querySelectorAll('#rule-checklist input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            localStorage.setItem(cb.getAttribute('data-id'), cb.checked);
+        });
+    }
+
+    // 체크 전체 초기화
+    function resetChecklist() {
+        const checkboxes = document.querySelectorAll('#rule-checklist input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            cb.checked = false;
+            localStorage.removeItem(cb.getAttribute('data-id'));
+        });
+    }
+</script>
+<!-- FTC 대회 규정 체크리스트 박스 끝 -->
                         <div class="sub-title">💡 로보틱스 아이디어 노트 & 브레인스토밍</div>
                         <div class="sub-desc">로봇 구조 개선 아이디어, 주행 전략, 대회 준비 중 떠오르는 영감을 자유롭게 적어두는 전용 메모 공간입니다.</div>
                         
